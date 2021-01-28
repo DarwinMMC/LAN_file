@@ -1,7 +1,7 @@
 # LAN_file
 Compartir ficheros con dispositivos en la misma red LAN
 
-#### INTRODUCCION
+#### INTRODUCCIÓN
 Con este proyecto basico podrás compartir cualquier tipo de archivo mediante la red local "LAN" desde cualquier dispositivo que se encuentre dentro dicha red
 
 
