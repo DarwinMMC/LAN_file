@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+  
+    <title>Document</title>
+    <style type="text/css">
+    body{
+        margin: 0px;
+        padding: 0px;
+    }
+        #lista{
+            list-style: none;
+             width: 100%; 
+             height: 450px;
+             font-size: 13px;
+             overflow-y: auto;
+             overflow-x: auto;
+         
+        }
+        #lista li{
+            border-bottom: 1px solid #e9e9e9;
+            padding: 10px;
+        }
+      
+    </style>
+</head>
+<body>
+
+  
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+            
+                    <table class="w-100">
+                        <tr>
+                            <td>
+                                <input class="form-control form-control-sm" id="file-input" name="documento" type="file">
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm" id="calcelar">cancelar</button>
+                            </td>
+                        </tr>
+                    </table>
+                   
+    
+               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-sm mt-4" id="enviar">subir</button>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+               
+            </div>
+        </div>
+    </div>
+
+<center>
+    <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-bs-autohide="false">
+        <div class="toast-header">
+          
+          <strong class="me-auto">File</strong>
+          <small>ahora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="mensaje">
+         
+        </div>
+      </div>
+</center>
+    <ul id="lista">
+
+    </ul>
+    <br>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+
+    <script src="lib/axios.min.js"></script>
+    <script src="lib/jquery-3.5.1.min.js"></script>
+    <script src="config_ip.js"></script>
+    <script>
+        $(document).ready(function(){
+         
+            
+            var enviar = document.getElementById('enviar');
+            var fichero = null,nombre_fichero;
+            limpiar();
+
+            function listar_fichero(ficheros){
+                var contenido = "";
+                    for (let index = 0; index < ficheros.length; index++) {
+                        contenido += "<li><a href='http://"+address+":3000/uploads/"+ficheros[index]+"'>"+ficheros[index]+"</a></li>";
+                    }
+                    $('#lista').html(contenido);
+            }
+
+            function consultar_directorio(){
+                axios.get("http://"+address+":3000/ficheros")
+                .then(resultado=>{
+                    listar_fichero(resultado.data.ficheros)
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+            }
+            function leerFichero(e) {
+            var archivo = e.target.files[0];
+                fichero = archivo;
+              
+                nombre_fichero = fichero.name;
+            }
+
+            document.getElementById('file-input').addEventListener('change', leerFichero, false);
+
+            enviar.addEventListener("click",function(){
+                console.log(fichero)
+                if((fichero!=null) &&(!!fichero)){
+                    var formdata = new FormData();
+                    formdata.append('documento',fichero);
+                    axios.post("http://"+address+":3000",formdata,{headers:{"Content-Type": "multipart/form-data"}})
+                    .then(resultado=>{
+                        listar_fichero(resultado.data.ficheros)
+                        
+                        $("#mensaje").html("<strong> "+nombre_fichero+"</strong> a sido cargado con éxito")
+                        $(".toast").toast('show');
+
+                        limpiar();
+                    })
+                    .catch(error=>{
+                        $("#mensaje").html(error+"")
+                        $(".toast").toast('show');
+                    });
+                }else{
+                    $("#mensaje").html("no hay nada que enviar.")
+                    $(".toast").toast('show');
+                }
+              
+            });
+
+            function limpiar(){
+                document.getElementById('file-input').value="";
+                fichero = "";
+                nombre_fichero = "";
+            }
+            $("#calcelar").click(function(){
+                limpiar();
+            })
+            consultar_directorio();
+        })
+       
+    </script>
+</body>
+</html>
