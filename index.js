@@ -26,7 +26,7 @@ function config_ip(){
   for (const name of Object.keys(nets)) {
       for (const net of nets[name]) {
           if (net.family === 'IPv4' && !net.internal) {
-              if((name == "wlp3s0") || (name=="wlan0")||(name=="Wi-Fi")){
+              if((name == "wlp3s0") || (name=="wlan0") || (name=="Wi-Fi") || (name=="eth0)){
                 address_server = net.address;
                 config_file(net.address)
                 break;
