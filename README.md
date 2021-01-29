@@ -18,11 +18,11 @@ Con este proyecto basico podrás compartir cualquier tipo de archivo mediante la
 **Requisitos**
 <ul>
   <li>Nodejs</li>
-  <li>NPM</li>
+  <li>npm</li>
 </ul>
 
 **Instalación**
-1) Ubícate dentro del proyecto
+1) Ubícate dentro del proyecto usando la consola de nodejs
 2) Ejecuta npm install
 3) Ejecuta node index.js
 4) Abre el navegador y dirígete a la dirección que te aparece en consola
