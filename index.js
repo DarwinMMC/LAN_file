@@ -80,5 +80,5 @@ app.use(express.static(path.join(__dirname,'public')))
 app.listen(3000,(error)=>{
     if(error){console.log(error);return 0}
     console.log(chalk.green("accede desde tu dispositivo como"));
-    console.log(chalk.yellow("http://"+address_server+"/3000"))
+    console.log(chalk.yellow("http://"+address_server+":3000"))
 })
